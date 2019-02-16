@@ -12,3 +12,8 @@ To deactivate venv:
 ```
 $ deactivate
 ```  
+
+To run app on http://localhost:5000 
+```
+$ python3 app.py
+```
