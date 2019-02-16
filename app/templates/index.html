@@ -33,7 +33,7 @@
       <ul>
           {% for todo in todos %}
             {% if todo.completed %}
-              <li> {{todo.name}} </li>
+              <li style="text-decoration: line-through"> {{todo.name}} </li>
             {% else %}
             <li> {{todo.name}} </li>
             {% endif %}
