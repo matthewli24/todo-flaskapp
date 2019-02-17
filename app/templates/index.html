@@ -1,35 +1,48 @@
-<!DOCTYPE html>
-<html>
+  <!DOCTYPE html>
+  <html>
 
-<head>
-  <title> My ToDo App </title>
-</head>
+  <head>
+    <title> My ToDo App </title>
+  </head>
 
-<body>
+  <body>
+    <h1> My ToDo App </h1>
 
-  <h1> My ToDo App </h1>
-  <img src="https://photodoto.com/wp-content/uploads/2011/01/Lazy-cat-11.jpg"/>
-  <h2> Daily Goals </h2>
-  <ul>
-    <li> Don't Be Lazy 
-      <a href="https://metrouk2.files.wordpress.com/2016/05/deeply-lazy-cat.jpg?quality=90&strip=all&zoom=1&resize=644%2C370"> Cat </a>
-    </li>
-    <li> Have 
-      <a href="https://media.giphy.com/media/129NVCr1UfsGTS/giphy.gif"> Fun </a> 
-    </li>
-    <li> Learn Something
-        <a href="https://www.technobuffalo.com/wp-content/uploads/2013/06/cat-asleep-on-keyboard-470x310@2x.jpg"> New </a>
-    </li>
-    <li> Spread A Little
-        <a href="https://www.rxvitamins.com/rxvitaminsforpet/wp-content/uploads/2018/12/FatCat-1024x576.jpg"> Love </a>
-    </li>
-    <li> Do One Act Of 
-        <a href="https://d17fnq9dkz9hgj.cloudfront.net/uploads/2018/03/Scottish-Fold_01.jpg"> Kindness </a>
-    </li>
-  </ul>  
+    {% if username %}
+      <div style="padding: 30px">
+        Welcome {{username}} :)
+        <button type="button" onclick="window.location.href='{{url_for('login')}}'">Log Out</button>
+      </div>
+    {% else %}
+      <div style="padding: 30px">
+        <button type="button" onclick="window.location.href='{{url_for('login')}}'">Login</button>
+        <button type="button" onclick="window.location.href='{{url_for('createUser')}}'">New User</button>
+      </div>
+    {% endif %}
 
-  <div>
-    <p> ToDo </p>
+    <img src="https://photodoto.com/wp-content/uploads/2011/01/Lazy-cat-11.jpg"/>
+    <h2> Daily Goals </h2>
+    <ul>
+      <li> Don't Be Lazy 
+        <a href="https://metrouk2.files.wordpress.com/2016/05/deeply-lazy-cat.jpg?quality=90&strip=all&zoom=1&resize=644%2C370"> Cat </a>
+      </li>
+      <li> Have 
+        <a href="https://media.giphy.com/media/129NVCr1UfsGTS/giphy.gif"> Fun </a> 
+      </li>
+      <li> Learn Something
+          <a href="https://www.technobuffalo.com/wp-content/uploads/2013/06/cat-asleep-on-keyboard-470x310@2x.jpg"> New </a>
+      </li>
+      <li> Spread A Little
+          <a href="https://www.rxvitamins.com/rxvitaminsforpet/wp-content/uploads/2018/12/FatCat-1024x576.jpg"> Love </a>
+      </li>
+      <li> Do One Act Of 
+          <a href="https://d17fnq9dkz9hgj.cloudfront.net/uploads/2018/03/Scottish-Fold_01.jpg"> Kindness </a>
+      </li>
+    </ul>  
+
+    <div>
+      {% if todos %}
+      <p style="font-size: 30px;"> Your ToDo List </p>
       <ul>
           {% for todo in todos %}
             {% if todo.completed %}
@@ -39,9 +52,22 @@
             {% endif %}
           {% endfor %}
       </ul>
-    
-  </div>
+      {% endif %}
 
-</body>
+      {% if username %}
+      <p style="font-size: 30px;"> {{username}}'s ToDo List </p>
+      <ul>
+          {% for todo in todos %}
+            {% if todo.completed %}
+              <li style="text-decoration: line-through"> {{todo.name}} </li>
+            {% else %}
+            <li> {{todo.name}} </li>
+            {% endif %}
+          {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+  </body>
 
 </html>
