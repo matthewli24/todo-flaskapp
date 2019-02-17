@@ -57,11 +57,11 @@
       {% if username %}
       <p style="font-size: 30px;"> {{username}}'s ToDo List </p>
       <ul>
-          {% for todo in todos %}
+          {% for todo in todo_list %}
             {% if todo.completed %}
-              <li style="text-decoration: line-through"> {{todo.name}} </li>
+              <li style="text-decoration: line-through"> {{todo.content}} </li>
             {% else %}
-            <li> {{todo.name}} </li>
+            <li> {{todo.content}} </li>
             {% endif %}
           {% endfor %}
       </ul>

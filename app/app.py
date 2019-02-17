@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, url_for, json, redirect
+from flask import Flask, render_template, request, jsonify, url_for, json, redirect, make_response
 import os
 import requests
 
@@ -19,9 +19,22 @@ def login():
     url = 'https://hunter-todo-api.herokuapp.com/auth'
     payload = {"username":username}
     r = requests.post(url, json=payload)
-    print(r.text)
+    print("Retrieved Cookie: ", r.cookies)
+    jar = r.cookies
+    
     if r.status_code == 200:
-      return render_template('index.html', username=username)
+      todo_items_url = 'https://hunter-todo-api.herokuapp.com/todo-item'
+      res = requests.get(todo_items_url, cookies=jar)
+      print(res.text)
+      todo_list = res.json()
+
+      response = make_response(render_template('index.html', username=username, todo_list=todo_list))
+      key = 'sillyauth'
+      value = r.cookies[key]
+      print(key, value)
+      response.set_cookie(key, value)
+      return response
+
   return  render_template('login.html')
 
 @app.route('/createuser', methods=['GET', 'POST'])
