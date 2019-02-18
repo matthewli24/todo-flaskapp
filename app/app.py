@@ -16,26 +16,27 @@ def index():
 def login():
   if request.method == 'POST':
     username = request.form['username']
-    url = 'https://hunter-todo-api.herokuapp.com/auth'
-    payload = {"username":username}
-    r = requests.post(url, json=payload)
-    print("Retrieved Cookie: ", r.cookies)
-    jar = r.cookies
-    
-    if r.status_code == 200:
-      todo_items_url = 'https://hunter-todo-api.herokuapp.com/todo-item'
-      res = requests.get(todo_items_url, cookies=jar)
-      print(res.text)
-      todo_list = res.json()
+    if username:
+      url = 'https://hunter-todo-api.herokuapp.com/auth'
+      payload = {"username":username}
+      r = requests.post(url, json=payload)
+      print("Retrieved Cookie: ", r.cookies)
+      jar = r.cookies
+      
+      #if authenticated then get user's todo list
+      if r.status_code == 200:
+        todo_list = get_todo_list(jar)
 
-      response = make_response(render_template('index.html', username=username, todo_list=todo_list))
-      key = 'sillyauth'
-      value = r.cookies[key]
-      print(key, value)
-      response.set_cookie(key, value)
-      return response
+        #store cookie to server 
+        response = make_response(render_template('index.html', username=username, todo_list=todo_list))
+        key = 'sillyauth'
+        val = r.cookies[key]
+        #print(key, val)
+        response.set_cookie(key, val)
+        response.set_cookie('username', username)
+        return response
 
-  return  render_template('login.html')
+  return render_template('login.html')
 
 @app.route('/createuser', methods=['GET', 'POST'])
 def createUser():
@@ -47,6 +48,100 @@ def createUser():
     print(r.text)
     return render_template('login.html')
   return render_template('createUser.html')
+
+@app.route('/add', methods=['POST'])
+def add():
+  if request.method == 'POST':
+    #retrieve stored cookie
+    username = request.cookies.get('username')
+    key = 'sillyauth'
+    val = request.cookies.get(key)
+    jar = requests.cookies.RequestsCookieJar()
+    jar.set(key, val, domain='hunter-todo-api.herokuapp.com')
+   
+    #post the new item
+    item = request.form['new_todo_item']
+    #print(item)
+    url = 'https://hunter-todo-api.herokuapp.com/todo-item'
+    payload = {'content':item}
+    r = requests.post(url, cookies=jar, json=payload)
+    #print(r.status_code)
+
+    #get updated todolist
+    todo_list = get_todo_list(jar)
+
+    #render index with new item
+    if r.status_code == 201 and todo_list:
+      return render_template('index.html', username=username, todo_list=todo_list)
+
+  return render_template('login.html')
+    
+@app.route('/completed', methods=['POST'])
+def completed():
+  if request.method == 'POST':
+    #retrieve stored cookie
+    username = request.cookies.get('username')
+    #print(username)
+    key = 'sillyauth'
+    val = request.cookies.get(key)
+    jar = requests.cookies.RequestsCookieJar()
+    jar.set(key, val, domain='hunter-todo-api.herokuapp.com')
+    #print(jar)
+
+    #get item id
+    if request.form.get('item_id'):
+      item_id = request.form['item_id']
+      print("item_id", item_id)
+
+      #mark item as completed
+      url = 'https://hunter-todo-api.herokuapp.com/todo-item/' + item_id
+      payload = {"completed":True}
+      r = requests.put(url, json=payload, cookies=jar)
+
+      #get updated todolist
+      todo_list = get_todo_list(jar)
+
+      return render_template('index.html', username=username, todo_list=todo_list)
+  
+
+  username = request.cookies.get('username')
+  todo_list = get_todo_list(jar)
+  return render_template('index.html', username=username, todo_list=todo_list)
+
+@app.route('/delete', methods=['POST'])
+def delete():
+  if request.method == 'POST':
+    #retrieve stored cookie
+    username = request.cookies.get('username')
+    key = 'sillyauth'
+    val = request.cookies.get(key)
+    jar = requests.cookies.RequestsCookieJar()
+    jar.set(key, val, domain='hunter-todo-api.herokuapp.com')
+   
+    #get item id
+    if request.form.get('item_id'):
+      item_id = request.form['item_id']
+      #print("item_id", item_id)
+
+      #delete item
+      url = 'https://hunter-todo-api.herokuapp.com/todo-item/' + item_id
+      r = requests.delete(url, cookies=jar)
+
+      #get updated todolist
+      todo_list = get_todo_list(jar)
+
+      return render_template('index.html', username=username, todo_list=todo_list)
+  
+
+  username = request.cookies.get('username')
+  todo_list = get_todo_list(jar)
+  return render_template('index.html', username=username, todo_list=todo_list)
+
+def get_todo_list(cookie_jar):
+  todo_items_url = 'https://hunter-todo-api.herokuapp.com/todo-item'
+  r = requests.get(todo_items_url, cookies=cookie_jar)
+  return r.json()
+
 
 if __name__ == "__main__":
   port = int(os.environ.get("PORT", 5000))

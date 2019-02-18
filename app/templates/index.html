@@ -56,17 +56,40 @@
 
       {% if username %}
       <p style="font-size: 30px;"> {{username}}'s ToDo List </p>
+      <form method="POST" action="/add">
+        Add ToDo : 
+        <input type="text" name="new_todo_item">
+        <input type="submit" value="Add ToDo">
+      </form> 
       <ul>
           {% for todo in todo_list %}
-            {% if todo.completed %}
-              <li style="text-decoration: line-through"> {{todo.content}} </li>
-            {% else %}
-            <li> {{todo.content}} </li>
+            {% if todo.content and todo.completed and not(todo.deleted) %}
+              <li style="text-decoration: line-through"> {{todo.content}} </li> 
+
+              <form method="POST" action="/delete">
+                <input type="checkbox" name="item_id" value="{{todo.id}}">
+                <input type="submit" value="DELETE">
+              </form>     
+
+            {% elif todo.content and not(todo.deleted) %}
+              <li> {{todo.content}} </li>
+
+              <form method="POST" action="/completed">
+                <input type="checkbox" name="item_id" value="{{todo.id}}">
+                <input type="submit" value="COMPLETED">
+              </form> 
+
+              <form method="POST" action="/delete">
+                <input type="checkbox" name="item_id" value="{{todo.id}}">
+                <input type="submit" value="DELETE">
+              </form> 
+
             {% endif %}
           {% endfor %}
       </ul>
       {% endif %}
     </div>
+
 
   </body>
 
