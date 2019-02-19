@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <title> Logged Out </title>
+</head>
+
+<body>
+  <div class="jumbotron jumbotron-fluid bg-primary text-white text-center">
+    <div class="container-fluid py-5">
+      <h1 class="display-4"> Logged Out </h1>
+      <img src="https://www.picsbud.com/thumbs/IlffOzqMfxhoe8UbCzT7tghasDK4hlxNVwriNXnnZJ8MyITIA3jaBd3yksjsLG3VesNYTCoirMnwmzz1Aq3-cg.jpg">
+    </div>
+    <div>
+      <button class="btn btn-danger btn-lg" type="button" onclick="window.location.href='{{url_for('login')}}'"> Login
+      </button>
+      <button class="btn btn-danger btn-lg" type="button" onclick="window.location.href='{{url_for('createUser')}}'">
+        NewUser </button>
+    </div>
+
+  </div>
+ 
+
+</body>
+
+</html>
