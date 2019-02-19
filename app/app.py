@@ -38,6 +38,10 @@ def login():
 
   return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+  return render_template('logout.html')
+
 @app.route('/createuser', methods=['GET', 'POST'])
 def createUser():
   if request.method == 'POST':

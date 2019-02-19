@@ -9,21 +9,24 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-  <title> Login </title>
+  <title> Logged Out </title>
 </head>
 
 <body>
   <div class="jumbotron jumbotron-fluid bg-primary text-white text-center">
-    <div class="container-fluid">
-      <h1 class="display-4"> Log In </h1>
+    <div class="container-fluid py-5">
+      <h1 class="display-4"> Logged Out </h1>
+      <img src="https://www.picsbud.com/thumbs/IlffOzqMfxhoe8UbCzT7tghasDK4hlxNVwriNXnnZJ8MyITIA3jaBd3yksjsLG3VesNYTCoirMnwmzz1Aq3-cg.jpg">
+    </div>
+    <div>
+      <button class="btn btn-danger btn-lg" type="button" onclick="window.location.href='{{url_for('login')}}'"> Login
+      </button>
+      <button class="btn btn-danger btn-lg" type="button" onclick="window.location.href='{{url_for('createUser')}}'">
+        NewUser </button>
     </div>
 
-    <form method="POST" action="/login">
-      <input type="text" name="username" placeholder="username">
-      <input type="submit" value="Log In">
-    </form>
-    
   </div>
+ 
 
 </body>
 
