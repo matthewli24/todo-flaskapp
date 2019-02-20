@@ -17,3 +17,8 @@ To run app on http://localhost:5000
 ```
 $ python3 app.py
 ```
+
+This App is currently deployed on heroku as of 02/18/2019:
+```
+https://todoflaskapp.herokuapp.com/
+```
