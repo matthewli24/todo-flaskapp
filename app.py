@@ -1,9 +1,19 @@
 from flask import Flask, render_template, request, jsonify, url_for, json, redirect, make_response
 import os
 import requests
+from flask_sqlalchemy import SQLAlchemy
 
 # create flask app
 app = Flask(__name__)
+
+#setting up db config
+username = "todoflaskapp"
+password = "todoflaskapp"
+endpoint = "todoflaskapp-db.cejj8nvffgy6.us-east-1.rds.amazonaws.com"
+db_instance_name = "todoflaskapp-db"
+uri = 'mysql://{}:{}@{}:3306/{}'.format(username, password, endpoint,db_instance_name)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
+db = SQLAlchemy(app)
 
 @app.route('/')
 def index():
