@@ -1,19 +1,8 @@
 from flask import Flask, render_template, request, jsonify, url_for, json, redirect, make_response
 import os
 import requests
-from flask_sqlalchemy import SQLAlchemy
-
-# create flask app
-app = Flask(__name__)
-
-#setting up db config
-username = "todoflaskapp"
-password = "todoflaskapp"
-endpoint = "todoflaskapp-db.cejj8nvffgy6.us-east-1.rds.amazonaws.com"
-db_instance_name = "todoflaskapp-db"
-uri = 'mysql://{}:{}@{}:3306/{}'.format(username, password, endpoint,db_instance_name)
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
-db = SQLAlchemy(app)
+from app.models import User, Todo_item
+from app import app
 
 @app.route('/')
 def index():
@@ -156,7 +145,3 @@ def get_todo_list(cookie_jar):
   r = requests.get(todo_items_url, cookies=cookie_jar)
   return r.json()
 
-
-if __name__ == "__main__":
-  port = int(os.environ.get("PORT", 5000))
-  app.run(host="0.0.0.0", port=port, threaded=True, debug=True)
